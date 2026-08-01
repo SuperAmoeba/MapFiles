@@ -2,6 +2,7 @@ import System.IO
 import System.Environment (getArgs)
 import System.Process (callCommand)
 import System.Directory (doesDirectoryExist, getDirectoryContents)
+import System.FilePath (takeExtension)
 
 main :: IO ()
 main = do
@@ -14,14 +15,22 @@ main = do
           files <- (filter (\f -> f /= "." && f /= "..")) <$> (getDirectoryContents dir)
           let fullCmd file = command ++ " \"" ++ dir ++ "/" ++ file ++ "\""
           mapM_ callCommand $ map fullCmd files
-          putStrLn "Yay! It worked :3"
-        else putStrLn "Error: Folder does not exist"
+          putStrLn ""
+          putStrLn "\xE61F Yay! It worked :3"
+        else putStrLn "\xE61F Error: Folder does not exist"
+    [command, dir, ext] -> do
+      exists <- doesDirectoryExist dir
+      if exists
+        then do
+          files <- (filter (\f -> f /= "." && f /= "..")) <$> (getDirectoryContents dir)
+          let ffiles = filterExtensions ext files
+          let fullCmd file = command ++ " \"" ++ dir ++ "/" ++ file ++ "\""
+          mapM_ callCommand $ map fullCmd ffiles
+          putStrLn ""
+          putStrLn "\xE61F Yay! It worked :3"
+        else putStrLn "\xE61F Error: Folder does not exist"
     _ ->
-      putStrLn "Usage: ./map <cmd> <dir>"
+      putStrLn "\xE61F Usage: './map <cmd> <dir>' or './map <cmd> <dir> <file extension>'"
 
-{-
--- already predefined as mapM_ :sob:
-mapC :: (a -> IO ()) -> [a] -> IO ()
-mapC f []     = return ()
-mapC f (x:xs) = f x >> mapC f xs
--}
+filterExtensions :: String -> [FilePath] -> [FilePath]
+filterExtensions ext = filter (\f -> takeExtension f == ext)
