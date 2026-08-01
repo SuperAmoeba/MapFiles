@@ -1,4 +1,3 @@
---import System.IO
 import System.Environment (getArgs)
 import System.Process (callCommand)
 import System.Directory (doesDirectoryExist, getDirectoryContents)
