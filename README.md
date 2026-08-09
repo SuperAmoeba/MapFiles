@@ -48,4 +48,3 @@ $ ./map ormolu ./MapFiles .hs
 also works! I would recommend passing them with "" just to be sure, though :3
 
 For any of these you should make sure that the command works on the files it will be applied to.
-The path can be relative or absolute. Using "~" as "/home/user/" doesn't work.
