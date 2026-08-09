@@ -3,19 +3,7 @@ Applies a command/script to each file in a folder
 
 
 ## Installation
-After cloning the repo or getting map.hs in your computer, you just need to compile it with
-
-```console
-$ ghc map.hs
-```
-
-This will create
-```console
-map.o
-map.hi
-map
-```
-files. You only need to keep map.
+Download the compiled binary from the Releases tab or compile it from source yourself!
 
 ## Usage
 You can use it on every file in a path:
