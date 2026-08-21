@@ -35,4 +35,12 @@ $ ./map ormolu ./MapFiles .hs
 ```
 also works! :3
 
+
+
+You can also pass the flag -r as the first argument to apply the command recursively.
+
+```console
+$ ./map <flag> <cmd> <dir> <extension>
+```
+
 For any of these you should make sure that the command works on the files it will be applied to.
