@@ -42,9 +42,10 @@ main = do
       exists <- doesDirectoryExist dir
       if exists then do
         files <- (filter (\f -> f /= "." && f /= "..")) <$> (getDirectoryContents dir)
+        let fullPaths = map (dir </>) files
         case action of
           "hgrep" -> do
-            mapM_ (hgrep word) files
+            mapM_ (hgrep word) fullPaths
             --putStrLn ""
             --putStrLn "\xE61F Yay! It worked :3"
           _ ->
@@ -55,9 +56,10 @@ main = do
       if exists then do
         files <- (filter (\f -> f /= "." && f /= "..")) <$> (getDirectoryContents dir)
         let ffiles = filterExtensions ext files
+            fullPaths = map (dir </>) ffiles
         case action of
           "hgrep" -> do
-            mapM_ (hgrep word) ffiles
+            mapM_ (hgrep word) fullPaths
             --putStrLn ""
             --putStrLn "\xE61F Yay! It worked :3"
           _ ->
