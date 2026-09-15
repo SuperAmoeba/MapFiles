@@ -40,7 +40,7 @@ also works! :3
 You can also pass a flag to change how the program acts.
 
 ```console
-$ ./map <flag> <cmd> <dir> <extension>
+$ ./map <flag> <cmd/function> <dir> <extension>
 ```
 
 The flag -r applies the command recursively.
