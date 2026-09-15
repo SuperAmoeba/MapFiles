@@ -37,10 +37,15 @@ also works! :3
 
 
 
-You can also pass the flag -r as the first argument to apply the command recursively.
+You can also pass a flag to change how the program acts.
 
 ```console
 $ ./map <flag> <cmd> <dir> <extension>
 ```
+
+The flag -r applies the command recursively.
+The flag -f lets you use a built-in function instead of passing a command:
+  - hgrep (curry-possible version of grep)
+
 
 For any of these you should make sure that the command works on the files it will be applied to.

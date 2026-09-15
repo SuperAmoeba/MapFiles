@@ -1,8 +1,10 @@
+module Main where
+
 import System.Environment (getArgs)
 import System.Process (callCommand)
 import System.Directory (doesDirectoryExist, getDirectoryContents, listDirectory, doesFileExist)
 import System.FilePath (takeExtension, (</>))
-
+import BuiltInFunctions (hgrep)
 
 main :: IO ()
 main = do
@@ -15,8 +17,8 @@ main = do
           files <- (filter (\f -> f /= "." && f /= "..")) <$> (getDirectoryContents dir)
           let fullCmd file = command ++ " \"" ++ dir ++ "/" ++ file ++ "\""
           mapM_ callCommand $ map fullCmd files
-          putStrLn ""
-          putStrLn "\xE61F Yay! It worked :3"
+          --putStrLn ""
+          --putStrLn "\xE61F Yay! It worked :3"
         else putStrLn "\xE61F Error: Folder does not exist"
     [command, dir, ext] -> do
       exists <- doesDirectoryExist dir
@@ -26,21 +28,43 @@ main = do
           let ffiles = filterExtensions ext files
           let fullCmd file = command ++ " \"" ++ dir ++ "/" ++ file ++ "\""
           mapM_ callCommand $ map fullCmd ffiles
-          putStrLn ""
-          putStrLn "\xE61F Yay! It worked :3"
-        else putStrLn "\xE61F Error. Something went wrong. Usage: './map <cmd> <dir>' || './map <cmd> <dir> <file extension>' || './map <flag> <cmd> <dir> <file extension>'"
-    [flag, command, dir, ext] -> do 
+          --putStrLn ""
+          --putStrLn "\xE61F Yay! It worked :3"
+        else putStrLn "\xE61F Error: Folder does not exist"
+    ["-r", command, dir, ext] -> do 
       exists <- doesDirectoryExist dir
       if exists
         then do
-          if flag == "-r"
-            then do 
-              files <- listDirectory dir
-              recurse files dir ext command
-          else putStrLn "\xE61F Error: Only supported flag is '-r'"
+          files <- listDirectory dir
+          recurse files dir ext command
+      else putStrLn "\xE61F Error: Folder does not exist"
+    ["-f", action, word, dir] -> do
+      exists <- doesDirectoryExist dir
+      if exists then do
+        files <- (filter (\f -> f /= "." && f /= "..")) <$> (getDirectoryContents dir)
+        case action of
+          "hgrep" -> do
+            mapM_ (hgrep word) files
+            --putStrLn ""
+            --putStrLn "\xE61F Yay! It worked :3"
+          _ ->
+            putStrLn "\xE61F Error: Function does not exist"
+      else putStrLn "\xE61F Error: Folder does not exist"
+    ["-f", action, word, dir, ext] -> do
+      exists <- doesDirectoryExist dir
+      if exists then do
+        files <- (filter (\f -> f /= "." && f /= "..")) <$> (getDirectoryContents dir)
+        let ffiles = filterExtensions ext files
+        case action of
+          "hgrep" -> do
+            mapM_ (hgrep word) ffiles
+            --putStrLn ""
+            --putStrLn "\xE61F Yay! It worked :3"
+          _ ->
+            putStrLn "\xE61F Error: Function does not exist"
       else putStrLn "\xE61F Error: Folder does not exist"
     _ ->
-      putStrLn "\xE61F Usage: './map <cmd> <dir>' || './map <cmd> <dir> <file extension>' || './map <flag> <cmd> <dir> <file extension>'"
+      putStrLn "\xE61F Usage: './map <cmd> <dir>' || './map <cmd> <dir> <file extension>' || './map <flag> <cmd/function> <dir> <file extension>'"
 
 
 type Extention = String
